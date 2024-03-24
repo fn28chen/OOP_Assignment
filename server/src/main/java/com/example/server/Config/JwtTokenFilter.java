@@ -1,5 +1,4 @@
 package com.example.server.Config;
-
 import com.example.server.Entity.User;
 import com.example.server.Repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -25,6 +24,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     UserRepository userRepository;
 
+    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
