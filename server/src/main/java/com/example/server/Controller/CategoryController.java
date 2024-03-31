@@ -1,5 +1,6 @@
 package com.example.server.Controller;
 
+import com.example.server.Common.MapCategory;
 import com.example.server.DTO.CategoryDTO;
 import com.example.server.Entity.Category;
 import com.example.server.Service.CategoryService;
@@ -18,7 +19,15 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    
+    @PostMapping("/create/category")
+    public ResponseEntity<?>create(@RequestBody CategoryDTO categoryDTO){
+        return categoryService.create(new MapCategory().mapCategory(categoryDTO));
+    }
+
+    @GetMapping("get/by/{id}")
+    public ResponseEntity<CategoryDTO> getById(@PathVariable Long id){
+        return new ResponseEntity<>(new MapCategory().mapCategoryDTO(categoryService.getById(id)), HttpStatus.ACCEPTED);
+    }
     @GetMapping("/get/all")
     public ResponseEntity<List<CategoryDTO>> getAllCategory(){
         List<Category> categories = categoryService.getAll();
