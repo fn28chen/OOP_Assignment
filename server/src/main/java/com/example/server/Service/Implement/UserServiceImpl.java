@@ -1,7 +1,9 @@
 package com.example.server.Service.Implement;
 
+import com.example.server.Entity.Cart;
 import com.example.server.Entity.User;
 import com.example.server.Repository.UserRepository;
+import com.example.server.Service.CartService;
 import com.example.server.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +16,7 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
+    CartService cartService;
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username);
@@ -27,5 +30,9 @@ public class UserServiceImpl implements UserService {
         {
             throw new RuntimeException("Tai khoan da ton tai");
         }
+        User user1 = userRepository.save(user);
+        Cart cart = new Cart();
+        cart.setUser(user1);
+        cartService.create(cart);
     }
 }
