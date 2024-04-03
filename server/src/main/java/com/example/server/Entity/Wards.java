@@ -4,23 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
-public class Address {
+public class Wards {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String description;
-    @JsonIgnore
+    private String name;
     @ManyToOne
-    private City city;
-    @JsonIgnore
-    @ManyToOne
+    @JoinColumn(name = "district_id")
     private District district;
-    @JsonIgnore
-    @ManyToOne
-    private Wards wards;
-    @OneToOne
-    @JsonIgnore
-    private User user;
 }
