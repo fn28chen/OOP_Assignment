@@ -36,3 +36,20 @@ public class AddressController {
 
     
 }
+
+@PostMapping("/create")
+    public ResponseEntity<?> createAddress(@RequestBody AddressDTO addressDTO) {
+        return addressService.createAddress(mapAddress(addressDTO));
+    }
+    private Address mapAddress(AddressDTO addressDTO){
+        Address address = new Address();
+        Wards wards = wardsService.getById(addressDTO.getWardsDTO().getId());
+        District district = districtService.getById(addressDTO.getDistrictDTO().getId());
+        address.setId(addressDTO.getId());
+        address.setDescription(addressDTO.getDescription());
+        City city = cityService.getById(addressDTO.getCityDTO().getId());
+       address.setDistrict(district);
+       address.setWards(wards);
+        address.setCity(city);
+        return address;
+    }
