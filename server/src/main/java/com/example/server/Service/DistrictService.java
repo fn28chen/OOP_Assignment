@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface DistrictService {
     public ResponseEntity<?> createDistrict(District district);
+    public List<District> getAllDistrict();
+    public District getById(Long id);
 }

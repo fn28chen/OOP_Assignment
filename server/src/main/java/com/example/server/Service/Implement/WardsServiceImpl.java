@@ -18,5 +18,13 @@ public class WardsServiceImpl implements WardsService {
         wardsRepository.save(wards);
         return new ResponseEntity<>("Wards created successfully", HttpStatus.CREATED);
     }
-    
+    @Override
+    public List<Wards> getAllWards(){
+        return wardsRepository.getAllWards();
+    }
+
+    @Override
+    public Wards getById(Long id){
+        return wardsRepository.findWardsById(id);
+    }
 }

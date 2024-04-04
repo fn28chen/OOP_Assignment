@@ -21,5 +21,11 @@ public class DistrictServiceImpl implements DistrictService {
         return new ResponseEntity<>("District created successfully", HttpStatus.CREATED);
     }
 
-   
+    @Override
+    public List<District> getAllDistrict() {
+        return districtRepository.getAllDistrict();
+    }
+    public District getById(Long id){
+        return districtRepository.findDistrictById(id);
+    }
 }
