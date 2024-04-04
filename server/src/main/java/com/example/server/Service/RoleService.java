@@ -1,4 +1,4 @@
-package com.example.shop.Service;
+package com.example.server.Service;
 
 public interface RoleService {
 }

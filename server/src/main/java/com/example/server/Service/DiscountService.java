@@ -1,6 +1,6 @@
-package com.example.shop.Service;
+package com.example.server.Service;
 
-import com.example.shop.Entity.Discount;
+import com.example.server.Entity.Discount;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

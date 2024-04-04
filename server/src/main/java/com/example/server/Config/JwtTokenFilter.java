@@ -1,4 +1,5 @@
 package com.example.server.Config;
+
 import com.example.server.Entity.User;
 import com.example.server.Repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -24,7 +25,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     UserRepository userRepository;
 
-    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -33,7 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt) && jwtTokenUtil.validateToken(jwt)) {
                 String username = jwtTokenUtil.getUserIdFromJWT(jwt);
                 User userDetails = userRepository.findByEmail(username);
-                System.out.println("Authorization: " + userDetails.getAuthorities());
+                System.out.println("day nhe hi hi" + userDetails.getAuthorities());
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

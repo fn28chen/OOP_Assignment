@@ -1,6 +1,6 @@
-package com.example.shop.Repository;
+package com.example.server.Repository;
 
-import com.example.shop.Entity.Role;
+import com.example.server.Entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
