@@ -13,6 +13,7 @@ public interface CartItemService {
     public List<Long> getFullIdItem(Long idCart);
 
     public Long getCount(Long idCart, Long idItem);
+
     public void buyAll(Long idCart);
     public void create(CartItem item);
 }

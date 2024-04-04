@@ -10,6 +10,7 @@ public class UserDTO {
     private String phone;
     private String email;
     private String password;
-
+    private AddressDTO addressDTO;
+    private RoleDTO roleDTO;
 
 }
