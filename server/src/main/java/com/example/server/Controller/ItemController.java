@@ -6,6 +6,8 @@ import com.example.server.Entity.DescriptionItem;
 import com.example.server.Entity.Discount;
 import com.example.server.Entity.Item;
 import com.example.server.Service.CategoryService;
+import com.example.server.Service.DescriptionItemService;
+import com.example.server.Service.DiscountService;
 import com.example.server.Service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,11 @@ public class ItemController {
     @Autowired
     CategoryService categoryService;
 
-   
+    @Autowired
+    DiscountService discountService;
+
+    @Autowired
+    DescriptionItemService descriptionItemService;
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody ItemDTO itemDTO) {
@@ -74,6 +80,15 @@ public class ItemController {
             Category category = categoryService.getById(itemDTO.getCategoryDTO().getId());
             item.setCategory(category);
         }
+        if (itemDTO.getDiscountDTO() != null && itemDTO.getDiscountDTO().getId() != null) {
+            Discount discount = discountService.getById(itemDTO.getDiscountDTO().getId());
+            item.setDiscount(discount);
+        }
+        if (itemDTO.getDescriptionItemDTO() != null && itemDTO.getDescriptionItemDTO().getId() != null) {
+            DescriptionItem descriptionItem = descriptionItemService.getById(itemDTO.getDescriptionItemDTO().getId());
+            item.setDescriptionItem(descriptionItem);
+        }
+
         return item;
     }
 
