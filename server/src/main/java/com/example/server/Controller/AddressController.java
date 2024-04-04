@@ -35,7 +35,7 @@ public class AddressController {
     DistrictService districtService;
 
     
-}
+
 
 @PostMapping("/create")
     public ResponseEntity<?> createAddress(@RequestBody AddressDTO addressDTO) {
@@ -53,3 +53,4 @@ public class AddressController {
         address.setCity(city);
         return address;
     }
+}

@@ -10,4 +10,6 @@ import java.util.List;
 public interface WardsService {
 
     public ResponseEntity<?> createWards(Wards wards);
+    public List<Wards> getAllWards();
+    public Wards getById(Long id);
 }

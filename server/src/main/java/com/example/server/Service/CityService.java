@@ -9,4 +9,5 @@ import java.util.List;
 public interface CityService {
     public ResponseEntity<?> createCity(City city);
     public List<City> getAllCity();
+    public City getById(Long id);
 }
