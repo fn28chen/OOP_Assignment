@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "@/components/context/user-provider";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -32,6 +34,7 @@ interface SessionProps {
 }
 
 export default function ProfileForm() {
+  const { setUser } = useContext(UserContext);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,6 +56,7 @@ export default function ProfileForm() {
         console.log("Login successful", data);
         localStorage.setItem("user", JSON.stringify(data));
         console.log(localStorage.getItem("user"));
+        setUser(data);
         
         console.log(data);
       } else {
