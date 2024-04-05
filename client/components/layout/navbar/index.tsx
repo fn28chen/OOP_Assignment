@@ -1,14 +1,39 @@
-
 "use client";
-import react from "react";
+import react, { useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
+import { UserContext } from "@/components/context/user-provider";
+import dynamic from 'next/dynamic';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
+
+import Search from "./search";
+import ListItem from "@/components/global/list-item";
+const ListItemWithNoSSR = dynamic(
+  () => import("@/components/global/list-item"),
+  { ssr: false }
+);
 
 import { Button } from "@/components/ui/button";
 import { FaRegUser } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
-
+import { IoLogOutOutline } from "react-icons/io5";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/global/toggle-theme";
 
 const menu: { title: string; href: string; description: string }[] = [
@@ -76,6 +101,13 @@ const menu: { title: string; href: string; description: string }[] = [
 
 export default function Navbar() {
   const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    router.push("/auth/login");
+  };
 
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
@@ -90,6 +122,65 @@ export default function Navbar() {
               Logo
             </div>
           </Link>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Shirt</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
+                    {menu.slice(0, 3).map((item, index) => (
+                      <ListItem
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Pants</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
+                    {menu.slice(3, 6).map((item, index) => (
+                      <ListItemWithNoSSR
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Shoes</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
+                    {menu.slice(6, 9).map((item, index) => (
+                      <ListItemWithNoSSR
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/search/10" legacyBehavior passHref>
+                  <NavigationMenuLink>
+                    {menu.slice(9, 10).map((item, index) => (
+                      <ListItemWithNoSSR
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
         <div className="hidden justify-center md:flex md:w-1/3">
           <Link
@@ -100,18 +191,44 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="flex items-center justify-end md:w-1/3 gap-2">
-          <ModeToggle />
-          <Link href="/auth/login">
-            <Button variant="outline" size="custom">
-              <FaRegUser />
+        {user ? (
+          <div className="flex items-center justify-end md:w-1/3 gap-2">
+            <Search />
+            <ModeToggle />
+            <Link href="/profile">
+              <Button variant="outline" size="custom">
+                <FaRegUser />
+              </Button>
+            </Link>
+            <Button variant="outline" size="custom" onClick={handleLogout}>
+              <IoLogOutOutline />
             </Button>
-          </Link>
-          <Button variant="outline" size="custom">
-            <RiShoppingCartLine />
-          </Button>
-        </div>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="custom">
+                  <RiShoppingCartLine />
+                </Button>
+              </SheetTrigger>
+              
+            </Sheet>
+          </div>
+        ) : (
+          <div className="flex items-center justify-end md:w-1/3 gap-2">
+            <Search />
+            <ModeToggle />
+            <Link href="/auth/login">
+              <Button variant="outline" size="custom">
+                <FaRegUser />
+              </Button>
+            </Link>
+            <Button variant="outline" size="custom">
+              <RiShoppingCartLine />
+            </Button>
+          </div>
+        )}
       </div>
     </nav>
   );
 }
+
