@@ -47,4 +47,3 @@ public class CategoryController {
         return categoryDTO;
     }
 }
-

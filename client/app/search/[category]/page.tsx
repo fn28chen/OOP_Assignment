@@ -3,6 +3,7 @@ import axios from "axios";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
+import FilterList from "@/components/layout/search/filter";
 import ProductGridItems from "@/components/layout/product-item";
 
 export default async function CategoryPage({

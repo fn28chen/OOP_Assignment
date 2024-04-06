@@ -56,6 +56,11 @@ public class ItemController {
         }
         return itemDTOS;
     }
+    @GetMapping("get/{idItem}")
+    public ItemDTO getItemById(@PathVariable Long idItem){
+        ItemDTO itemDTO = mapperDTO(itemService.getById(idItem));
+        return itemDTO;
+    }
 
     @GetMapping("/get/all")
     public List<ItemDTO> getAllItem() {
@@ -73,8 +78,8 @@ public class ItemController {
         item.setName(itemDTO.getName());
         item.setPrice(itemDTO.getPrice());
         item.setColor(itemDTO.getColor());
-        item.setSize(itemDTO.getSize());
-        item.setCount(itemDTO.getCount());
+//        item.setSize(itemDTO.getSize());
+//        item.setCount(itemDTO.getCount());
         item.setImage(itemDTO.getImage());
         if (itemDTO.getCategoryDTO() != null && itemDTO.getCategoryDTO().getId() != null) {
             Category category = categoryService.getById(itemDTO.getCategoryDTO().getId());
@@ -99,8 +104,8 @@ public class ItemController {
         itemDTO.setColor(item.getColor());
         itemDTO.setImage(item.getImage());
         itemDTO.setPrice(item.getPrice());
-        itemDTO.setSize(item.getSize());
-        itemDTO.setCount(item.getCount());
+//        itemDTO.setSize(item.getSize());
+//        itemDTO.setCount(item.getCount());
         return itemDTO;
     }
 }

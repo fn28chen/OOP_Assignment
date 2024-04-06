@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { useShoppingCart } from "../context/cart-provider";
 import { Sheet } from "../ui/sheet";
 import Image from "next/image";
-import axios from "axios";
-import { Button } from "../ui/button";
-import { useShoppingCart } from "../context/cart-provider";
 
-type CartItemProp = {
+type CartItemProps = {
   id: number;
   quantity: number;
 };
@@ -17,9 +17,9 @@ type Item = {
   image: string;
 };
 
-export function CartItem({ id, quantity }: CartItemProp) {
-  const [item, setItem] = useState<Item | null>(null);
+export function CartItem({ id, quantity }: CartItemProps) {
   const { removeFromCart } = useShoppingCart();
+  const [item, setItem] = useState<Item | null>(null);
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -32,9 +32,12 @@ export function CartItem({ id, quantity }: CartItemProp) {
         console.error("Error fetching item:", error);
       }
     };
+
     fetchItem();
-  });
+  }, [id]);
+
   if (item == null) return null;
+
   return (
     <Sheet>
       <div className="flex flex-row justify-center items-center gap-4 py-2">
@@ -46,21 +49,23 @@ export function CartItem({ id, quantity }: CartItemProp) {
           objectFit="cover"
         />
         <div className="flex flex-row">
-          <span>
-            {item.name}{" "}
-            {quantity > 1 && (
-              <span className="" style={{ fontSize: ".65rem" }}>
-                x{quantity}
-              </span>
-            )}
-          </span>
-          <span>{item.price * quantity}</span>
+          <div className="">
+            <div>
+              {item.name}{" "}
+              {quantity > 1 && (
+                <span className="" style={{ fontSize: ".65rem" }}>
+                  x{quantity}
+                </span>
+              )}
+            </div>
+            <div> {item.price * quantity}</div>
+          </div>
         </div>
         <Button
           variant="destructive"
           size="sm"
+          onClick={() => removeFromCart(item.id)}
           className="ml-auto"
-          onClick={() => removeFromCart(id)}
         >
           &times;
         </Button>

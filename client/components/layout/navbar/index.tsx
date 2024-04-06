@@ -1,11 +1,10 @@
 "use client";
-import react, { useState, useEffect, useLayoutEffect, useContext } from "react";
+import react, { useState, useContext } from "react";
 import Link from "next/link";
-import Search from "./search";
-
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/components/context/user-provider";
 import { useShoppingCart } from "@/components/context/cart-provider";
+import dynamic from 'next/dynamic';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,7 +15,14 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
+
+import Search from "./search";
 import ListItem from "@/components/global/list-item";
+const ListItemWithNoSSR = dynamic(
+  () => import("@/components/global/list-item"),
+  { ssr: false }
+);
+
 import { Button } from "@/components/ui/button";
 import { FaRegUser } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
@@ -27,45 +33,80 @@ import {
   SheetContent,
   SheetDescription,
   SheetFooter,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/global/toggle-theme";
+import { CartItem } from "@/components/cart/cart-item";
 
-const menu = [
+const menu: { title: string; href: string; description: string }[] = [
   {
-    title: "All",
-    path: "/search",
+    title: "Category 1",
+    href: "/search/1",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
-    title: "Shirt",
-    path: "/search/1",
+    title: "Category 2",
+    href: "/search/2",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
-    title: "Pants",
-    path: "/search/2",
+    title: "Category 3",
+    href: "/search/3",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Category 4",
+    href: "/search/4",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Category 5",
+    href: "/search/5",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Category 6",
+    href: "/search/6",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Category 7",
+    href: "/search/7",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Category 8",
+    href: "/search/8",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Category 9",
+    href: "/search/9",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
     title: "Accessories",
-    path: "/search/3",
+    href: "/search/10",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
   },
 ];
-
-interface SessionProps {
-  fullName: string;
-  email: string;
-}
 
 export default function Navbar() {
   const router = useRouter();
   const [showCart, setShowCart] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const { openCart, cartQuantity } = useShoppingCart();
-  const { isOpen } = useShoppingCart();
   const { cartItems } = useShoppingCart();
-
-  console.log("user: ", user);
 
   const handleLogout = () => {
     setUser(null);
@@ -77,7 +118,13 @@ export default function Navbar() {
     openCart();
     setShowCart(true);
   };
-  console.log(isOpen);
+
+  const submitCartHandler = () => {
+    setShowCart(false);
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    cartItems.length !== 0 && router.push("/checkout");
+    console.log("cartItems: ", cartItems);
+  };
 
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
@@ -89,28 +136,73 @@ export default function Navbar() {
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
             <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              Clothes Shop's Logo
+              Logo
             </div>
           </Link>
-          {menu.length ? (
-            <ul className="hidden gap-6 text-sm md:flex md:items-center">
-              {menu.map((item) => (
-                <li key={item.title}>
-                  <Link
-                    href={item.path}
-                    className="text-neutral-500 underline-offset-4 hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-neutral-300"
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Shirt</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
+                    {menu.slice(0, 3).map((item, index) => (
+                      <ListItem
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Pants</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
+                    {menu.slice(3, 6).map((item, index) => (
+                      <ListItemWithNoSSR
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Shoes</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid grid-rows-3 gap-3 p-6 w-[250px]">
+                    {menu.slice(6, 9).map((item, index) => (
+                      <ListItemWithNoSSR
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/search/10" legacyBehavior passHref>
+                  <NavigationMenuLink>
+                    {menu.slice(9, 10).map((item, index) => (
+                      <ListItemWithNoSSR
+                        key={index}
+                        title={item.title}
+                        href={item.href}
+                      />
+                    ))}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
         <div className="hidden justify-center md:flex md:w-1/3">
           <Link
             href="/"
-            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+            className="md:hidden mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
             Clothes Shop
           </Link>
@@ -137,13 +229,33 @@ export default function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent>
-                <SheetHeader></SheetHeader>
                 <SheetDescription>
-                  
+                  {cartItems.length ? (
+                    <ul className="divide-y divide-neutral-100 dark:divide-neutral-800 m-4">
+                      <div>User: {user ? user.fullName : "Guest"}</div>
+                      {cartItems.map((item) => (
+                        <CartItem key={item.id} {...item} />
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="flex items-center justify-center h-64">
+                      <p className="text-lg font-medium text-neutral-500 dark:text-neutral-400">
+                        Your cart is empty
+                      </p>
+                    </div>
+                  )}
                 </SheetDescription>
                 <SheetFooter className="fixed bottom-0 left-0 w-full p-4">
                   <SheetClose asChild>
-                    <Button type="submit">Submit</Button>
+                    <Button
+                      type="submit"
+                      className="w-[80px]"
+                      onClick={() => {
+                        submitCartHandler();
+                      }}
+                    >
+                      Submit
+                    </Button>
                   </SheetClose>
                 </SheetFooter>
               </SheetContent>
@@ -167,3 +279,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
