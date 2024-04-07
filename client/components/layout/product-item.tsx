@@ -59,7 +59,7 @@ export default function ProductGridItems({ params }: ProductGridItemsProps) {
       {products.map((product) => (
         <HoverCard key={product.id}>
           <HoverCardTrigger>
-            <Card className="w-[200px] h-[220px]">
+            <Card className="w-[200px] h-[200px]">
               <CardHeader className="px-2 items-center justify-center">
                 <Link href={`/product/${product.id}`}>
                   <Image

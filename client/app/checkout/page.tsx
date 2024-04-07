@@ -11,18 +11,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { LargeNumberLike } from "crypto";
 
 interface CartItem {
   id: number;
   name: string;
   image: string;
   quantity: number;
+  price: number;
 }
 
 interface ApiResponse {
   id: number;
   name: string;
   image: string;
+  price: number;
 }
 
 const CheckoutPage = () => {
@@ -44,6 +47,7 @@ const CheckoutPage = () => {
           name: response.data.name,
           image: response.data.image,
           quantity: parsedCartItems[index].quantity,
+          price: response.data.price,
         }));
         setCartItems(fullCartItems);
       });
@@ -51,7 +55,7 @@ const CheckoutPage = () => {
   }, []);
 
   const handleSubmitDeal = () => {
-    // Submit order
+    
   }
 
   return (
@@ -72,13 +76,17 @@ const CheckoutPage = () => {
               </CardHeader>
               <CardContent className="py-4 items-center justify-center">
                 <CardTitle>{item.name}</CardTitle>
-                <CardDescription>{item.quantity}</CardDescription>
+                <CardDescription>Quantity: {item.quantity}</CardDescription>
+                <CardDescription>Price: {item.price}</CardDescription>
+                <CardDescription>
+                  Total: {item.quantity * item.price}
+                </CardDescription>
               </CardContent>
             </Card>
           </li>
         ))}
       </ul>
-      <Button variant="default" className="flex justify-end items-center mt-4 ml-auto">
+      <Button variant="default" onClick={handleSubmitDeal} className="flex justify-end items-center mt-4 ml-auto">
         Submit Order
       </Button>
     </div>
