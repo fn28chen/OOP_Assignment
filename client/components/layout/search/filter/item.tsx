@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ListItem, PathFilterItem } from ".";
 
-function PathFilterItemSearch({ item }: { item: PathFilterItem }) {
+function PathFilterItem({ item }: { item: PathFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const active = pathname === item.path;
@@ -33,7 +33,7 @@ function PathFilterItemSearch({ item }: { item: PathFilterItem }) {
   );
 }
 
-function SortFilterItemSearch({ item }: { item: SortFilterItem }) {
+function SortFilterItem({ item }: { item: SortFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const active = searchParams.get("sort") === item.slug;
@@ -67,8 +67,8 @@ function SortFilterItemSearch({ item }: { item: SortFilterItem }) {
 
 export function FilterItem({ item }: { item: ListItem }) {
   return "path" in item ? (
-    <PathFilterItemSearch item={item} />
+    <PathFilterItem item={item} />
   ) : (
-    <SortFilterItemSearch item={item} />
+    <SortFilterItem item={item} />
   );
 }
