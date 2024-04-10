@@ -123,6 +123,7 @@ public class ItemController {
                 item.getDescriptionItem().getDescription(),
                 item.getDescriptionItem().getForm()
         ));
+
         return itemDTO;
     }
 }
