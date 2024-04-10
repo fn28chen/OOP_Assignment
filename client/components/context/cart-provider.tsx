@@ -8,7 +8,7 @@ type ShippingCartProviderProps = {
 
 type CartItem = {
   id: number;
-  quantity: number;
+  count: number;
 };
 
 type ShoppingCartContext = {
@@ -19,7 +19,7 @@ type ShoppingCartContext = {
   increaseCartQuantity: (id: number, name: string) => void;
   increaseCartManyQuantities: (
     id: number,
-    quantity: number,
+    count: number,
   ) => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
@@ -37,7 +37,7 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const cartQuantity = cartItems.reduce(
-    (quantity, item) => quantity + item.quantity,
+    (quantity, item) => quantity + item.count,
     0
   );
 
@@ -50,17 +50,17 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
   };
 
   function getItemQuantity(id: number) {
-    return cartItems.find((item) => item.id === id)?.quantity || 0;
+    return cartItems.find((item) => item.id === id)?.count || 0;
   }
 
   function increaseCartQuantity(id: number, name: string) {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
-        return [...currItems, { id, name, quantity: 1 }];
+        return [...currItems, { id, name, count: 1 }];
       } else {
         return currItems.map((item) => {
           if (item.id === id) {
-            return { ...item, name, quantity: item.quantity + 1 };
+            return { ...item, name, count: item.count + 1 };
           } else {
             return item;
           }
@@ -71,15 +71,15 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
 
   function increaseCartManyQuantities(
     id: number,
-    quantity: number,
+    count: number,
   ) {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
-        return [...currItems, { id, quantity: quantity }];
+        return [...currItems, { id, count: count }];
       } else {
         return currItems.map((item) => {
           if (item.id === id) {
-            return { ...item, quantity: item.quantity + quantity };
+            return { ...item, count: item.count + count };
           } else {
             return item;
           }
@@ -94,12 +94,12 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
 
   function decreaseCartQuantity(id: number) {
     setCartItems((currItems) => {
-      if (currItems.find((item) => item.id == id)?.quantity === 1) {
+      if (currItems.find((item) => item.id == id)?.count === 1) {
         return currItems.filter((item) => item.id !== id);
       } else {
         return currItems.map((item) => {
           if (item.id === id) {
-            return { ...item, quantity: item.quantity - 1 };
+            return { ...item, quantity: item.count - 1 };
           } else {
             return item;
           }

@@ -61,7 +61,7 @@ const Product = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/item/get/${id}`
+          `http://localhost:8080/api/item/get/item/${id}`
         );
         const data = await response.json();
         setProduct(data);

@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name = "user")
 @Entity
 public class User implements UserDetails {
-// tạo một lớp MyUserDetail thay vì làm như này
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
