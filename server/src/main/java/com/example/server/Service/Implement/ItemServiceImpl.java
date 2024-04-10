@@ -1,7 +1,11 @@
 package com.example.server.Service.Implement;
 
 import com.example.server.Entity.Item;
+import com.example.server.Entity.NewPair;
+import com.example.server.Entity.Pair;
+import com.example.server.Entity.SizeItem;
 import com.example.server.Repository.ItemRepository;
+import com.example.server.Repository.SizeItemRepository;
 import com.example.server.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +20,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    SizeItemRepository  sizeItemRepository;
 
     @Autowired
     CategoryService categoryService;
@@ -54,5 +61,19 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> getAll(){
         return itemRepository.getAllItem();
     }
-
+    public boolean updateCount(List<Pair> idItems){
+        for(Pair item : idItems){
+            Long countItem= itemRepository.getCount(item.getId());
+            if(countItem < item.getCount()){
+                throw new RuntimeException("Khong hop ne");
+            }else{
+                Item item1 = itemRepository.getItemById(item.getId());
+                Long countNew = countItem-item.getCount();
+//                SizeItem item1 =  new SizeItem();
+                item1.setCount(countNew);
+                itemRepository.save(item1);
+            }
+        }
+        return true;
+    }
 }

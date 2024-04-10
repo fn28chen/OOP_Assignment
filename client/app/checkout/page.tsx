@@ -55,7 +55,20 @@ const CheckoutPage = () => {
   }, []);
 
   const handleSubmitDeal = () => {
-    
+    const storedCartItems = localStorage.getItem("cart");
+    if (storedCartItems) {
+      const parsedCartItems: CartItem[] = JSON.parse(storedCartItems);
+      Promise.all(
+        parsedCartItems.map((item) =>
+          axios.post(`http://localhost:8080/api/cart/add/items`, {
+            
+          })
+        )
+      ).then(() => {
+        localStorage.removeItem("cart");
+        setCartItems([]);
+      });
+    }
   }
 
   return (

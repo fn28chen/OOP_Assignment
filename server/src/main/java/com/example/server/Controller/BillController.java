@@ -27,7 +27,8 @@ public class BillController {
         Bill bill = new Bill();
         bill.setId(billDTO.getId());
         bill.setTotalPrice(billDTO.getTotalPrice());
-        Cart cart = cartService.getById(billDTO.getCartDTO().getId());
+        Cart cart = new Cart();
+        cart.setId(billDTO.getCartDTO().getId());
         bill.setCart(cart);
         return bill;
     }

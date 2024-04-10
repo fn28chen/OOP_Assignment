@@ -1,5 +1,8 @@
 package com.example.server.Controller;
 
+import com.example.server.DTO.CategoryDTO;
+import com.example.server.DTO.DescriptionItemDTO;
+import com.example.server.DTO.DiscountDTO;
 import com.example.server.DTO.ItemDTO;
 import com.example.server.Entity.Category;
 import com.example.server.Entity.DescriptionItem;
@@ -56,7 +59,7 @@ public class ItemController {
         }
         return itemDTOS;
     }
-    @GetMapping("get/{idItem}")
+    @GetMapping("get/item/{idItem}")
     public ItemDTO getItemById(@PathVariable Long idItem){
         ItemDTO itemDTO = mapperDTO(itemService.getById(idItem));
         return itemDTO;
@@ -78,8 +81,8 @@ public class ItemController {
         item.setName(itemDTO.getName());
         item.setPrice(itemDTO.getPrice());
         item.setColor(itemDTO.getColor());
-//        item.setSize(itemDTO.getSize());
-//        item.setCount(itemDTO.getCount());
+        item.setSize(itemDTO.getSize());
+        item.setCount(itemDTO.getCount());
         item.setImage(itemDTO.getImage());
         if (itemDTO.getCategoryDTO() != null && itemDTO.getCategoryDTO().getId() != null) {
             Category category = categoryService.getById(itemDTO.getCategoryDTO().getId());
@@ -106,6 +109,20 @@ public class ItemController {
         itemDTO.setPrice(item.getPrice());
         itemDTO.setSize(item.getSize());
         itemDTO.setCount(item.getCount());
+        itemDTO.setCategoryDTO(new CategoryDTO(
+                item.getCategory().getId(),
+                item.getCategory().getName()
+        ));
+        itemDTO.setDiscountDTO(new DiscountDTO(
+                item.getDiscount().getId(),
+                item.getDiscount().getPercent()
+        ));
+        itemDTO.setDescriptionItemDTO(new DescriptionItemDTO(
+                item.getDescriptionItem().getId(),
+                item.getDescriptionItem().getMaterial(),
+                item.getDescriptionItem().getDescription(),
+                item.getDescriptionItem().getForm()
+        ));
         return itemDTO;
     }
 }
