@@ -12,12 +12,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LargeNumberLike } from "crypto";
+import { useRouter } from "next/navigation";
 
 interface CartItem {
   id: number;
   name: string;
   image: string;
-  quantity: number;
+  count: number;
   price: number;
 }
 
@@ -30,6 +31,7 @@ interface ApiResponse {
 
 const CheckoutPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const storedCartItems = localStorage.getItem("cart");
@@ -38,7 +40,7 @@ const CheckoutPage = () => {
       Promise.all(
         parsedCartItems.map((item) =>
           axios.get<ApiResponse>(
-            `http://localhost:8080/api/item/get/${item.id}`
+            `http://localhost:8080/api/item/get/item/${item.id}`
           )
         )
       ).then((responses: AxiosResponse<ApiResponse>[]) => {
@@ -46,7 +48,7 @@ const CheckoutPage = () => {
           id: response.data.id,
           name: response.data.name,
           image: response.data.image,
-          quantity: parsedCartItems[index].quantity,
+          count: parsedCartItems[index].count,
           price: response.data.price,
         }));
         setCartItems(fullCartItems);
@@ -55,8 +57,58 @@ const CheckoutPage = () => {
   }, []);
 
   const handleSubmitDeal = () => {
-    
-  }
+    const storedCartItems = localStorage.getItem("cart");
+    const parsedCartItems = JSON.parse(storedCartItems || "[]");
+    const totalPrice = cartItems.reduce(
+      (acc, item) => acc + item.price * item.count,
+      0
+    );
+
+    const userDTO = {
+      id: 1,
+    };
+
+    const cartDTO = {
+      id: 1,
+      userDTO,
+    };
+
+    // Post cart items ( NOT DONE )
+    axios
+      .post("http://localhost:8080/api/cart/add/items", {
+        id: 1,
+        userDTO,
+        itemDTOS: parsedCartItems.map((item: CartItem) => ({
+          id: item.id,
+          count: item.count,
+        })),
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error adding items to cart:", error);
+      });
+
+    // Post total price ( DONE )
+    axios
+      .post("http://localhost:8080/api/bill/create/bill", {
+        totalPrice,
+        cartDTO: cartDTO,
+        itemDTOS: parsedCartItems,
+      })
+      .then((response) => {
+        console.log(response.data);
+        // Clear the cart after successful checkout
+        localStorage.removeItem("cart");
+      })
+      .catch((error) => {
+        console.error("Error creating bill:", error);
+      });
+
+      // router.push("/");
+      
+  };
 
   return (
     <div className="flex flex-col px-32 py-4 w-full h-full">
@@ -76,17 +128,25 @@ const CheckoutPage = () => {
               </CardHeader>
               <CardContent className="py-4 items-center justify-center">
                 <CardTitle>{item.name}</CardTitle>
-                <CardDescription>Quantity: {item.quantity}</CardDescription>
+                <CardDescription>Quantity: {item.count}</CardDescription>
                 <CardDescription>Price: {item.price}</CardDescription>
                 <CardDescription>
-                  Total: {item.quantity * item.price}
+                  Total: {item.count * item.price}
                 </CardDescription>
               </CardContent>
             </Card>
           </li>
         ))}
       </ul>
-      <Button variant="default" onClick={handleSubmitDeal} className="flex justify-end items-center mt-4 ml-auto">
+      <div>
+        Total price:{" "}
+        {cartItems.reduce((acc, item) => acc + item.price * item.count, 0)}
+      </div>
+      <Button
+        variant="default"
+        onClick={handleSubmitDeal}
+        className="flex justify-end items-center mt-4 ml-auto"
+      >
         Submit Order
       </Button>
     </div>

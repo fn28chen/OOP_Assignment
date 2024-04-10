@@ -3,6 +3,8 @@ package com.example.server.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Item {
@@ -15,7 +17,7 @@ public class Item {
     private Double price;
     private String color;
     private String size;
-    private long count;
+    private Long count;
 
     @ManyToOne
     private Category category;
@@ -23,5 +25,7 @@ public class Item {
     private Discount discount;
     @ManyToOne
     private DescriptionItem descriptionItem;
+//    @ManyToMany(mappedBy ="items")
+//    private List<Size> size;
 
 }

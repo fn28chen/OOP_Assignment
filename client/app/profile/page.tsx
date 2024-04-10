@@ -1,17 +1,31 @@
 "use client";
 import { UserContext } from "@/components/context/user-provider";
-import { User } from "lucide-react";
+import { User as UserIcon } from "lucide-react";
 import React, { useContext } from "react";
+import {
+  Card,
+  CardTitle,
+  CardDescription,
+  CardHeader,
+  CardContent,
+} from "@/components/ui/card";
 
-const page = () => {
+const ProfilePage = () => {
   const { user } = useContext(UserContext);
+
   return (
     <div>
-      <p>Welcome to the page profile</p>
-      <p>{user?.email}</p>
-      <p>{user?.fullName}</p>
+      <Card>
+        <CardHeader>
+          <UserIcon size={48} />
+        </CardHeader>
+        <CardContent>
+          <CardTitle>{user?.fullName}</CardTitle>
+          <CardDescription>Email: {user?.email}</CardDescription>
+        </CardContent>
+      </Card>
     </div>
   );
 };
 
-export default page;
+export default ProfilePage;

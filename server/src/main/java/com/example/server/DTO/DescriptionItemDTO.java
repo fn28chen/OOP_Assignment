@@ -8,4 +8,11 @@ public class DescriptionItemDTO {
     private String material;
     private String form;
     private String description;
+
+    public DescriptionItemDTO(Long id, String material, String form, String description) {
+        this.id = id;
+        this.material = material;
+        this.form = form;
+        this.description = description;
+    }
 }

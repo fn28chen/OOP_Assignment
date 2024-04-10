@@ -1,7 +1,9 @@
 package com.example.server.Service;
 
 import com.example.server.Entity.Cart;
-import com.example.server.Entity.Item;
+
+import com.example.server.Entity.NewPair;
+import com.example.server.Entity.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +19,6 @@ public interface CartService {
     public ResponseEntity<?> buyAllItem(Long id);
 
     public Cart getById(Long idCart);
+
+    public List<Pair> getAllIdItemInCart(Long id);
 }

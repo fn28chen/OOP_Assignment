@@ -18,4 +18,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> getAllItemWithCategoryId(@Param("id") Long id);
     @Query("select it from Item as it")
     List<Item>getAllItem();
+    @Query(value = "select it.count from Item  " +
+            "as it " +
+            " where it.id = :id", nativeQuery = true)
+    Long getCount(@Param("id") Long id);
 }

@@ -1,5 +1,6 @@
 package com.example.server.Controller;
 
+import com.example.server.Common.MapAddress;
 import com.example.server.DTO.AddressDTO;
 import com.example.server.Entity.Address;
 import com.example.server.Entity.City;
@@ -40,14 +41,17 @@ public class AddressController {
     }
     private Address mapAddress(AddressDTO addressDTO){
         Address address = new Address();
+
         Wards wards = wardsService.getById(addressDTO.getWardsDTO().getId());
         District district = districtService.getById(addressDTO.getDistrictDTO().getId());
+        City city = cityService.getById(addressDTO.getCityDTO().getId());
+
         address.setId(addressDTO.getId());
         address.setDescription(addressDTO.getDescription());
-        City city = cityService.getById(addressDTO.getCityDTO().getId());
         address.setDistrict(district);
         address.setWards(wards);
         address.setCity(city);
+
         return address;
     }
 }

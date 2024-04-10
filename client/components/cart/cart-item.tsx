@@ -7,7 +7,7 @@ import Image from "next/image";
 
 type CartItemProps = {
   id: number;
-  quantity: number;
+  count: number;
 };
 
 type Item = {
@@ -17,7 +17,7 @@ type Item = {
   image: string;
 };
 
-export function CartItem({ id, quantity }: CartItemProps) {
+export function CartItem({ id, count }: CartItemProps) {
   const { removeFromCart } = useShoppingCart();
   const [item, setItem] = useState<Item | null>(null);
 
@@ -25,7 +25,7 @@ export function CartItem({ id, quantity }: CartItemProps) {
     const fetchItem = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/item/get/${id}`
+          `http://localhost:8080/api/item/get/item/${id}`
         );
         setItem(response.data);
       } catch (error) {
@@ -52,13 +52,13 @@ export function CartItem({ id, quantity }: CartItemProps) {
           <div className="">
             <div>
               {item.name}{" "}
-              {quantity > 1 && (
+              {count > 1 && (
                 <span className="" style={{ fontSize: ".65rem" }}>
-                  x{quantity}
+                  x{count}
                 </span>
               )}
             </div>
-            <div> {item.price * quantity}</div>
+            <div> {item.price * count}</div>
           </div>
         </div>
         <Button
