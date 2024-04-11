@@ -83,7 +83,6 @@ const CheckoutPage = () => {
       })
       .then((response) => {
         console.log(response.data);
-        // Clear the cart after successful checkout
         localStorage.removeItem("cart");
       })
       .catch((error) => {
