@@ -59,6 +59,7 @@ const CheckoutPage = () => {
   const handleSubmitDeal = () => {
     const storedCartItems = localStorage.getItem("cart");
     const parsedCartItems = JSON.parse(storedCartItems || "[]");
+
     const totalPrice = cartItems.reduce(
       (acc, item) => acc + item.price * item.count,
       0
@@ -72,23 +73,6 @@ const CheckoutPage = () => {
       id: 1,
       userDTO,
     };
-
-    // Post cart items ( NOT DONE )
-    axios
-      .post("http://localhost:8080/api/cart/add/items", {
-        id: 1,
-        userDTO,
-        itemDTOS: parsedCartItems.map((item: CartItem) => ({
-          id: item.id,
-          count: item.count,
-        })),
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error adding items to cart:", error);
-      });
 
     // Post total price ( DONE )
     axios
@@ -106,7 +90,7 @@ const CheckoutPage = () => {
         console.error("Error creating bill:", error);
       });
 
-      // router.push("/");
+      router.push("/");
       
   };
 

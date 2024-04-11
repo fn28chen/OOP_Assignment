@@ -36,6 +36,7 @@ public class CartController {
         for (ItemDTO itemDTO : cartDTO.getItemDTOS()) {
             Item item = new Item();
             item.setId(itemDTO.getId());
+            item.setCount(itemDTO.getCount());
             items.add(item);
         }
         cart.setItems(items);

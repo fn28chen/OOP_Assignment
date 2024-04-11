@@ -13,7 +13,6 @@ public class ItemDTO {
     private String size;
     private long count;
 
-
     private CategoryDTO categoryDTO;
     private DiscountDTO discountDTO;
     private DescriptionItemDTO descriptionItemDTO;
