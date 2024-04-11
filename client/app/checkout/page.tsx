@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { LargeNumberLike } from "crypto";
 import { useRouter } from "next/navigation";
+import { useShoppingCart } from "@/components/context/cart-provider";
 
 interface CartItem {
   id: number;
@@ -32,6 +33,7 @@ interface ApiResponse {
 const CheckoutPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const router = useRouter();
+  const { clearCart } = useShoppingCart();
 
   useEffect(() => {
     const storedCartItems = localStorage.getItem("cart");
@@ -88,7 +90,8 @@ const CheckoutPage = () => {
       .catch((error) => {
         console.error("Error creating bill:", error);
       });
-
+      
+      clearCart();
       router.push("/");
       
   };
