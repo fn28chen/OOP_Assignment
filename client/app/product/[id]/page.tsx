@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useShoppingCart } from "@/components/context/cart-provider";
-
+import axios from "axios";
 interface Product {
   id: number;
   name: string;
@@ -51,6 +51,33 @@ const Product = () => {
   const handleSubmitCart = () => {
     increaseCartManyQuantities(Number(id), localQuantity);
     setLocalQuantity(0);
+
+    const newCartItem: { id: number; count: number } = {
+      id: Number(id),
+      count: localQuantity,
+    };
+
+    localStorage.setItem("cart", JSON.stringify(newCartItem));
+    setLocalQuantity(0);
+
+    axios
+    .post("http://localhost:8080/api/cart/add/items", {
+      id: 1, // id cart
+      itemDTOS: [
+        {
+          id: Number(id),
+          count: localQuantity,
+        },
+      ],
+    })
+    .then((response) => {
+      console.log(response.data);
+      setLocalQuantity(0);
+    })
+    .catch((error) => {
+      console.error("Error adding items to cart:", error);
+    });
+
   };
 
   const removeLocalQuantity = () => {

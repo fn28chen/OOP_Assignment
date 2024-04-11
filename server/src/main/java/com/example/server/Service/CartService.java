@@ -14,8 +14,6 @@ public interface CartService {
     public ResponseEntity<?> create(Cart cart);
     public ResponseEntity<?> addItemWithCart(Cart cart);
 
-
-
     public ResponseEntity<?> buyAllItem(Long id);
 
     public Cart getById(Long idCart);
