@@ -102,7 +102,7 @@ const Product = () => {
     }
   }, [id]);
 
-  console.log(product);
+  // console.log(product);
 
   return (
     <div className="flex items-center justify-center">

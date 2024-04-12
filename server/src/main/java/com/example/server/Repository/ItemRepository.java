@@ -22,4 +22,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "as it " +
             " where it.id = :id", nativeQuery = true)
     Long getCount(@Param("id") Long id);
+
+    @Query(value = "select it.* from user as u inner join \n" +
+            "            cart as c on u.id = c.user_id inner join\n" +
+            "            cart_item as ci on ci.cart_id = c.id \n" +
+            "            inner join item as it on it.id = ci.item_id where u.id = :userId", nativeQuery = true)
+    List<Item> getAllItem(Long userId);
 }

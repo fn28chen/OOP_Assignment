@@ -4,6 +4,7 @@ import com.example.server.Config.JwtTokenUtil;
 import com.example.server.DTO.AuthenticationRequest;
 import com.example.server.DTO.AuthenticationResponse;
 import com.example.server.DTO.UserDTO;
+import com.example.server.Entity.Item;
 import com.example.server.Entity.User;
 import com.example.server.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -53,6 +56,15 @@ public class UserController {
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 
+    @PostMapping("get/all/item")
+    public List<Item> getAllItem(@RequestBody UserDTO userDTO){
+       return userService.getAllItem(mapperNew(userDTO));
+    }
+    private User mapperNew(UserDTO userDTO){
+        User user = new User();
+        user.setId(userDTO.getId());
+        return user;
+    }
     private User mapper(UserDTO userDTO) {
         User user = new User();
         user.setName(userDTO.getFullName());
