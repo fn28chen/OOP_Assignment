@@ -63,6 +63,7 @@ const CheckoutPage = () => {
   const handleSubmitDeal = () => {
     const storedCartItems = localStorage.getItem("cart");
     const parsedCartItems = JSON.parse(storedCartItems || "[]");
+    const userInfo = localStorage.getItem("user");
 
     const totalPrice = cartItems.reduce(
       (acc, item) => acc + item.price * item.count,
@@ -70,15 +71,17 @@ const CheckoutPage = () => {
     );
 
     const userDTO = {
-      id: 1,
+      // id is user id from database, it's in local storage
+      id: userInfo ? JSON.parse(userInfo).id : 0,
     };
+
+    console.log("userDTO", userDTO);
 
     const cartDTO = {
       id: 1,
       userDTO,
     };
 
-    // Post total price ( DONE )
     axios
       .post("http://localhost:8080/api/bill/create/bill", {
         totalPrice,

@@ -43,6 +43,11 @@ public class UserController {
         return new ResponseEntity<>("create user success", HttpStatus.CREATED);
     }
 
+    @PostMapping("/get/user/email")
+    public ResponseEntity<User> getUserByEmail(@RequestBody UserDTO  userDTO){
+        User user = userService.getUserByEmail(userDTO.getEmail());
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest user) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());

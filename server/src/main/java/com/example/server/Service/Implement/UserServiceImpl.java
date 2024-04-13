@@ -48,4 +48,9 @@ public class UserServiceImpl implements UserService {
         List<Item> items = itemRepository.getAllItem(user.getId());
         return items;
     }
+    @Override
+    public User  getUserByEmail(String email) {
+        User user = userRepository.loadByUserName(email);
+        return user;
+    }
 }

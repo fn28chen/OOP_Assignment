@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-//    @Query( value = "select u.* from User  as u where u.username = :name", nativeQuery = true)
-//    User loadByUserName(@Param("name") String name);
+    @Query( value = "select u.* from User  as u where u.email = :email", nativeQuery = true)
+    User loadByUserName(@Param("email") String email);
 
     User findByEmail(String email);
 

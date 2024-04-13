@@ -31,7 +31,7 @@ const fetchProducts = async () => {
     const response = await axios.get(
       "http://localhost:8080/api/item/get/all"
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);

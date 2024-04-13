@@ -18,6 +18,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/components/context/user-provider";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -28,14 +30,11 @@ const formSchema = z.object({
   }),
 });
 
-interface SessionProps {
-  fullName: string;
-  email: string;
-}
 
 export default function ProfileForm() {
   const { setUser } = useContext(UserContext);
   const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,8 +53,15 @@ export default function ProfileForm() {
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful", data);
-        localStorage.setItem("user", JSON.stringify(data));
-        console.log(localStorage.getItem("user"));
+        const userInfo = await axios.post("http://localhost:8080/api/user/get/user/email", {
+          email: data.email,
+          fullName: data.fullName,
+        });
+
+        // console.log(userInfo.data);
+
+        localStorage.setItem("user", JSON.stringify(userInfo.data));
+        // console.log(localStorage.getItem("user"));
         setUser(data);
         
         console.log(data);
@@ -63,8 +69,17 @@ export default function ProfileForm() {
         const errorData = await response.json();
         console.error("Login failed", errorData);
       }
+
+      toast({
+        title: "Login successfully!",
+        description: "You're login successfully!",
+      });
     } catch (error) {
       console.error("An error occurred while logging in", error);
+      toast({
+        title: "Login failed!",
+        description: "!!!",
+      });
     }
   }
 
