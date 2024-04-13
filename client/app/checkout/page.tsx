@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { LargeNumberLike } from "crypto";
 import { useRouter } from "next/navigation";
+import { useShoppingCart } from "@/components/context/cart-provider";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CartItem {
   id: number;
@@ -32,6 +34,8 @@ interface ApiResponse {
 const CheckoutPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const router = useRouter();
+  const { toast } = useToast();
+  const { clearCart } = useShoppingCart();
 
   useEffect(() => {
     const storedCartItems = localStorage.getItem("cart");
@@ -83,14 +87,25 @@ const CheckoutPage = () => {
       })
       .then((response) => {
         console.log(response.data);
+        toast({
+          title: "Order submitted!",
+          description: "Your order has been submitted successfully!",
+        });
         localStorage.removeItem("cart");
       })
       .catch((error) => {
         console.error("Error creating bill:", error);
+        toast({
+          title: "Order failed!",
+          description: "!!!",
+        });
       });
-
-      router.push("/");
       
+      clearCart();
+
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
   };
 
   return (

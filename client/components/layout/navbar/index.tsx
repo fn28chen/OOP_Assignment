@@ -114,6 +114,7 @@ export default function Navbar() {
     router.push("/auth/login");
   };
 
+
   const handleCart = () => {
     openCart();
     setShowCart(true);

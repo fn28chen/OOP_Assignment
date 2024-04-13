@@ -36,6 +36,18 @@ export function CartItem({ id, count }: CartItemProps) {
     fetchItem();
   }, [id]);
 
+  const handleRemoveFromCart = () => {
+    removeFromCart(id);
+    axios.delete(`http://localhost:8080/api/cart/delete/item/${id}`)
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error removing item from cart:', error);
+    });
+    localStorage.removeItem("cart");
+  }
+
   if (item == null) return null;
 
   return (
@@ -64,7 +76,7 @@ export function CartItem({ id, count }: CartItemProps) {
         <Button
           variant="destructive"
           size="sm"
-          onClick={() => removeFromCart(item.id)}
+          onClick={() => handleRemoveFromCart()}
           className="ml-auto"
         >
           &times;

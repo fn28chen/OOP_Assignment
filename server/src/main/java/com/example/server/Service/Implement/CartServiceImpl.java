@@ -42,14 +42,13 @@ public class CartServiceImpl implements CartService {
         }
         for (Item items : cart.getItems()) {
             CartItem cartItem = new CartItem();
-
             cartItem.setCount(items.getCount());
             Item item = itemService.getById(items.getId());
             cartItem.setCart(cart1);
             cartItem.setItem(item);
             cartItemService.create(cartItem);
         }
-        return new ResponseEntity<>("add Items success: ", HttpStatus.OK);
+        return new ResponseEntity<>("add Items success", HttpStatus.OK);
     }
 
 

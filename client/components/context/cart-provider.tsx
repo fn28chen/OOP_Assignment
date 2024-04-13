@@ -23,6 +23,7 @@ type ShoppingCartContext = {
   ) => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
+  clearCart: () => void;
   cartQuantity: number;
   cartItems: CartItem[];
 };
@@ -48,6 +49,10 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
   const closeCart = () => {
     setIsOpen(false);
   };
+
+  const clearCart = () => {
+    setCartItems([]);
+  }
 
   function getItemQuantity(id: number) {
     return cartItems.find((item) => item.id === id)?.count || 0;
@@ -123,6 +128,7 @@ export function ShoppingCartProvider({ children }: ShippingCartProviderProps) {
         removeFromCart,
         openCart,
         closeCart,
+        clearCart,
         cartItems,
         cartQuantity,
       }}

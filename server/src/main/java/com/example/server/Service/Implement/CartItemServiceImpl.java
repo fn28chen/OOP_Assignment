@@ -35,6 +35,13 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
+    public ResponseEntity<?> deleteItem(Long itemId){
+        CartItem item1 = cartItemRepository.getCartItemsByIdItem(itemId);
+        cartItemRepository.delete(item1);
+        return new ResponseEntity<>("delete success", HttpStatus.OK);
+    }
+
+    @Override
     public List<Long> getFullIdItem(Long idCart){
         List<Long> idItems = cartItemRepository.getFullIdItem(idCart);
         return idItems;
