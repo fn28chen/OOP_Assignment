@@ -27,6 +27,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(JSON.parse(user));
     }
   }, [])
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
+  
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

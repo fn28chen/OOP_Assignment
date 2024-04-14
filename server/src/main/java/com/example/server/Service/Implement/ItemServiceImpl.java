@@ -18,11 +18,12 @@ import java.util.List;
 @Service
 public class ItemServiceImpl implements ItemService {
 
+    // implement interface ( inheritance )
     @Autowired
     ItemRepository itemRepository;
 
     @Autowired
-    SizeItemRepository  sizeItemRepository;
+    SizeItemRepository sizeItemRepository;
 
     @Autowired
     CategoryService categoryService;
@@ -32,7 +33,7 @@ public class ItemServiceImpl implements ItemService {
     DescriptionItemService descriptionItemService;
 
     @Autowired
-    CartItemService  cartItemService;
+    CartItemService cartItemService;
 
     @Override
     public ResponseEntity<?> create(Item item){

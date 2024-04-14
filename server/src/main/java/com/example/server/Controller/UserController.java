@@ -25,6 +25,7 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
 
+    // dependencies injection
     @Autowired
     UserService userService;
 
@@ -70,6 +71,7 @@ public class UserController {
         user.setId(userDTO.getId());
         return user;
     }
+
     private User mapper(UserDTO userDTO) {
         User user = new User();
         user.setName(userDTO.getFullName());
