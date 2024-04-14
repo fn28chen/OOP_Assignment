@@ -34,10 +34,7 @@ const Product = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [localQuantity, setLocalQuantity] = useState(0);
   const router = useRouter();
-  const {
-    getItemQuantity,
-    increaseCartManyQuantities,
-  } = useShoppingCart();
+  const { getItemQuantity, increaseCartManyQuantities } = useShoppingCart();
   const quantity = getItemQuantity(Number(id));
 
   const handleIncreaseLocalQuantity = () => {
@@ -48,7 +45,7 @@ const Product = () => {
     setLocalQuantity(localQuantity - 1);
   };
 
-  const handleSubmitCart = () => {
+  const handleSubmitCart = async () => {
     increaseCartManyQuantities(Number(id), localQuantity);
     setLocalQuantity(0);
 
@@ -60,24 +57,40 @@ const Product = () => {
     localStorage.setItem("cart", JSON.stringify(newCartItem));
     setLocalQuantity(0);
 
-    axios
-    .post("http://localhost:8080/api/cart/add/items", {
-      id: 1, // id cart
-      itemDTOS: [
-        {
-          id: Number(id),
-          count: localQuantity,
-        },
-      ],
-    })
-    .then((response) => {
-      console.log(response.data);
-      setLocalQuantity(0);
-    })
-    .catch((error) => {
-      console.error("Error adding items to cart:", error);
-    });
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const { email, fullName } = storedUser;
 
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/user/get/user/email",
+        {
+          email: email,
+          fullName: fullName,
+        }
+      );
+
+      const userId = response.data.id;
+
+      axios
+        .post("http://localhost:8080/api/cart/add/items", {
+          id: userId, // id cart
+          itemDTOS: [
+            {
+              id: Number(id),
+              count: localQuantity,
+            },
+          ],
+        })
+        .then((response) => {
+          console.log(response.data);
+          setLocalQuantity(0);
+        })
+        .catch((error) => {
+          console.error("Error adding items to cart:", error);
+        });
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+    }
   };
 
   const removeLocalQuantity = () => {

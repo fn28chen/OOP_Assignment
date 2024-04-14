@@ -18,6 +18,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/components/context/user-provider";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -28,14 +29,11 @@ const formSchema = z.object({
   }),
 });
 
-interface SessionProps {
-  fullName: string;
-  email: string;
-}
 
 export default function ProfileForm() {
   const { setUser } = useContext(UserContext);
   const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,16 +53,30 @@ export default function ProfileForm() {
         const data = await response.json();
         console.log("Login successful", data);
         localStorage.setItem("user", JSON.stringify(data));
-        console.log(localStorage.getItem("user"));
         setUser(data);
         
-        console.log(data);
+        toast({
+          title: "Login successfully!",
+          description: "You're login successfully!",
+          duration: 1000,
+        })
       } else {
         const errorData = await response.json();
         console.error("Login failed", errorData);
+        
+        toast({
+          title: "Login failed!",
+          description: "Login failed!",
+          duration: 1000,
+        })
       }
     } catch (error) {
       console.error("An error occurred while logging in", error);
+      toast({
+        title: "Login failed!",
+        description: "Login failed!",
+        duration: 1000,
+      })
     }
   }
 

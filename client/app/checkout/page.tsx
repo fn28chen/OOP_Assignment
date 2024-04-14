@@ -60,25 +60,36 @@ const CheckoutPage = () => {
     }
   }, []);
 
-  const handleSubmitDeal = () => {
+  const handleSubmitDeal = async () => {
     const storedCartItems = localStorage.getItem("cart");
     const parsedCartItems = JSON.parse(storedCartItems || "[]");
-
+    const storedUser = JSON.parse(localStorage.getItem("user") || '{}');
+    const { email, fullName } = storedUser;
+  
     const totalPrice = cartItems.reduce(
       (acc, item) => acc + item.price * item.count,
       0
     );
+  
+    try {
+      const response = await axios.post("http://localhost:8080/api/user/get/user/email", {
+        email: email,
+        fullName: fullName,
+      });
+  
+      const userDTO = {
+        id: response.data.id,
+      };
+  
+      console.log("userDTO", userDTO);
+  
+      const cartDTO = {
+        id: response.data.id,
+        userDTO,
+      };
 
-    const userDTO = {
-      id: 1,
-    };
+      console.log("cartDTO", cartDTO);
 
-    const cartDTO = {
-      id: 1,
-      userDTO,
-    };
-
-    // Post total price ( DONE )
     axios
       .post("http://localhost:8080/api/bill/create/bill", {
         totalPrice,
@@ -90,6 +101,7 @@ const CheckoutPage = () => {
         toast({
           title: "Order submitted!",
           description: "Your order has been submitted successfully!",
+          duration: 1000,
         });
         localStorage.removeItem("cart");
       })
@@ -98,6 +110,7 @@ const CheckoutPage = () => {
         toast({
           title: "Order failed!",
           description: "!!!",
+          duration: 1000,
         });
       });
       
@@ -106,6 +119,14 @@ const CheckoutPage = () => {
       setTimeout(() => {
         router.push("/");
       }, 2000);
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+      toast({
+        title: "Error!",
+        description: "!!!",
+        duration: 1000,
+      });
+    }
   };
 
   return (

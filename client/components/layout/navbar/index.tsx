@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/global/toggle-theme";
 import { CartItem } from "@/components/cart/cart-item";
+import { useToast } from "@/components/ui/use-toast";
 
 const menu: { title: string; href: string; description: string }[] = [
   {
@@ -107,13 +108,18 @@ export default function Navbar() {
   const { user, setUser } = useContext(UserContext);
   const { openCart, cartQuantity } = useShoppingCart();
   const { cartItems } = useShoppingCart();
+  const { toast } = useToast();
 
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("user");
     router.push("/auth/login");
+    toast({
+      title: "Logout successfully!",
+      description: "You're logout successfully!",
+      duration: 1000,
+    });
   };
-
 
   const handleCart = () => {
     openCart();
