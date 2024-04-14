@@ -18,7 +18,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/components/context/user-provider";
-import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
@@ -53,33 +52,31 @@ export default function ProfileForm() {
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful", data);
-        const userInfo = await axios.post("http://localhost:8080/api/user/get/user/email", {
-          email: data.email,
-          fullName: data.fullName,
-        });
-
-        // console.log(userInfo.data);
-
-        localStorage.setItem("user", JSON.stringify(userInfo.data));
-        // console.log(localStorage.getItem("user"));
+        localStorage.setItem("user", JSON.stringify(data));
         setUser(data);
         
-        console.log(data);
+        toast({
+          title: "Login successfully!",
+          description: "You're login successfully!",
+          duration: 1000,
+        })
       } else {
         const errorData = await response.json();
         console.error("Login failed", errorData);
+        
+        toast({
+          title: "Login failed!",
+          description: "Login failed!",
+          duration: 1000,
+        })
       }
-
-      toast({
-        title: "Login successfully!",
-        description: "You're login successfully!",
-      });
     } catch (error) {
       console.error("An error occurred while logging in", error);
       toast({
         title: "Login failed!",
-        description: "!!!",
-      });
+        description: "Login failed!",
+        duration: 1000,
+      })
     }
   }
 
