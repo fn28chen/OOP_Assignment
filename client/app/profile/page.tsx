@@ -76,7 +76,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col px-8">
       <Card className="flex flex-row w-1/3">
         <CardHeader>
           <UserIcon size={48} />

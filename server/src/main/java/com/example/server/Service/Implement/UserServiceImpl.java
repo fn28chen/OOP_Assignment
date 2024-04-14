@@ -52,6 +52,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Item> getAllItem(User user){
         List<Item> items = itemRepository.getAllItem(user.getId());
+        for(Item item : items){
+            List<Long> counts  = cartItemRepository.getCounts(item.getId());
+            Long total = counts.stream().mapToLong(Long::longValue).sum();
+            item.setCount(total);
+        }
         return items;
     }
     
