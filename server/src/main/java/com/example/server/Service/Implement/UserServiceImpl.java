@@ -3,6 +3,7 @@ package com.example.server.Service.Implement;
 import com.example.server.Entity.Cart;
 import com.example.server.Entity.Item;
 import com.example.server.Entity.User;
+import com.example.server.Repository.CartItemRepository;
 import com.example.server.Repository.ItemRepository;
 import com.example.server.Repository.UserRepository;
 import com.example.server.Service.CartService;
@@ -16,11 +17,16 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    // implement interface ( inheritance )
+    // logic for userService
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    CartItemRepository cartItemRepository;
 
     @Autowired
     CartService cartService;
@@ -44,12 +50,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Item> getAllItem(User  user){
+    public List<Item> getAllItem(User user){
         List<Item> items = itemRepository.getAllItem(user.getId());
         return items;
     }
+    
     @Override
-    public User  getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         User user = userRepository.loadByUserName(email);
         return user;
     }

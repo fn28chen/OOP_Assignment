@@ -62,7 +62,7 @@ const ProfilePage = () => {
       })
       .then((response) => {
         setListItems(response.data);
-        // console.log("List Item Bought: ", response.data);
+        console.log("List Item Bought: ", response.data);
         setIsLoading(false);
       })
       .catch((error) => {

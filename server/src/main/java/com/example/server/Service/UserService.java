@@ -11,11 +11,14 @@ import java.util.List;
 @Service
 public interface UserService {
 
+    // abstraction
+    // public methods
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
     public void createUser(User user);
 
     public List<Item> getAllItem(User  user);
 
-    public User  getUserByEmail(String email);
+    public User getUserByEmail(String email);
+    
 }
